@@ -33,6 +33,13 @@ flash.now[:danger] = "Article has not been updated"
 render :edit
 end
 end
+def destroy
+@article = Article.find(params[:id]) 
+if @article.destroy
+flash[:success] = "Article has been deleted."
+redirect_to articles_path 
+end
+end
 protected
 def resource_not_found
 message = "The article you are looking for could not be found" 
