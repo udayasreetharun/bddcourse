@@ -1,15 +1,26 @@
 require "rails_helper"
 RSpec.feature "Showing an Article" do
 before do
+	@john=User.create(email:"john@example.com",password:"password")
+		@fred=User.create(email:"fred@example.com",password:"password")
 @article = Article.create(title: "The first article",
-body: "Lorem ipsum dolor sit amet, consectetur.") 
+body: "Lorem ipsum dolor sit amet, consectetur.",user: @john) 
+end
 
-scenario "A user lists all articles" do
+scenario "A non-user signed in then lists all articles" do
 visit "/"
 click_link @article.title
 expect(page).to have_content(@article.title) 
 expect(page).to have_content(@article.body) 
 expect(current_path).to eq(article_path(@article))
-end 
+expect(page).not_to have_link("Edit article")
+expect(page).not_to have_link("Delete article")
+end
+scenario "A user signed in then lists all articles" do
+visit "/"
+login_as (@fred)
+click_link @article.title
+expect(page).to have_link("Edit article")
+expect(page).to have_link("Delete article")
 end
 end
