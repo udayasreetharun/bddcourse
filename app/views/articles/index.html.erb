@@ -11,7 +11,7 @@
 <%= truncate(sanitize(article.body), length: 500) %>
 </div>
 <div class="author">
-<small>Created by: <%= article.user.email %></small>
+<small>Created by: <%= article.user.try(:email) %></small>
 </div> 
 </div>
 
